@@ -377,8 +377,10 @@ public static partial class Lux {
    /// 
    /// The following Lux properties are used:
    /// - Color: Fill color of the triangles
-   public static void Point (Vec2S pix, Color4 color)
-      => PointPxShader.It.Draw (new PointPxShader.Arg (pix, (Vec4F)color));
+   public static void Point (Vec2S pix, Color4 color) {
+      var arg = new PointPxShader.Arg (pix, (Vec4F)color);
+      PointPxShader.It.Draw (ref arg);
+   }
 
    /// <summary>Draws 2D points in world coordinates, with Z = 0</summary>
    /// 
@@ -471,6 +473,12 @@ public static partial class Lux {
    /// - BorderColor: color used for the border
    public static void RectBorder (RectS rect, int border) 
       => RectBorderPxShader.It.Draw ([new (rect, (short)border)]);
+
+   public static void UIRect (Vec2S center, Vec2S size, int radius, int borderWidth, Color4 fillColor, Color4 borderColor) {
+      UIRectShader.Args arg = new (center, new (size.X / 2, size.Y / 2), (short)radius, (short)borderWidth, 
+         fillColor, borderColor);
+      UIRectShader.It.Draw (ref arg);
+   }
 
    /// <summary>Fills a pixel-coordinate rounded rectangle with Color</summary>
    /// The rect coordinate are in pixels (see the Rect routine above for the exact interpretation

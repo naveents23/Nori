@@ -26,10 +26,20 @@ class DemoScene : Scene2 {
       mFace = new (Lib.ReadBytes ("nori:GL/Fonts/Roboto-Regular.ttf"), (int)(48 * Lux.DPIScale));
       Bound = new Bound2 (0, 0, 100, 50);
       BgrdColor = new Color4 (128, 96, 64);
-      Root = new SimpleVN (
-         () => (Lux.Color, Lux.TypeFace) = (Color4.White, mFace),
-         () => Lux.Text ("Welcome to Nori.", new Vec2S (100, Lux.PanelSize.Y - 100))
+
+      string message = "Welcome to Nori.";
+      var size = mFace.Measure (message, true);
+      var vn1 = new SimpleVN (
+         () => (Lux.Color, Lux.TypeFace, Lux.ZLevel) = (new (255, 224, 226, 228), mFace, 1),
+         () => Lux.Text (message, new (150, 210))
       );
-}
+
+      var vn2 = new SimpleVN (
+         () => Lux.UIRect (new Vec2S (670, 165), new Vec2S (1200, 210), 16, 8, new (255, 64, 66, 68), new (255, 200, 202, 204))
+      ) { Streaming = true };
+      var gvn = new GroupVN ([vn1, vn2]);
+      Root = gvn;
+   }
+
    TypeFace mFace;
 }
